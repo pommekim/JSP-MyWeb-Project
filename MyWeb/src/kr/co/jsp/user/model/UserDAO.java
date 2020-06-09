@@ -140,4 +140,36 @@ public class UserDAO implements IUserDAO {
 		}
 	}
 
+	@Override
+	public void updateUser(UserVO vo) {
+		String sql = "UPDATE my_user SET user_name=?, user_email=?, user_address=? WHERE user_id=?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getEmail());
+			pstmt.setString(3, vo.getAddress());
+			pstmt.setString(4, vo.getId());
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void deleteUser(String id) {
+		String sql = "DELETE FROM my_user WHERE user_id=?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

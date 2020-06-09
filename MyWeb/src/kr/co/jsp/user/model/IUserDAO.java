@@ -16,5 +16,11 @@ public interface IUserDAO {
 	
 	//비밀번호를 변경하는 메서드
 	void changePassword(String id, String pw);
+	
+	//회원 정보를 수정하는 메서드
+	void updateUser(UserVO vo);
+	
+	//회원 정보를 삭제하는 메서드
+	void deleteUser(String id);
 
 }
