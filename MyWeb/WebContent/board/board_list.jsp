@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,9 @@
 					<td>
 						<a href="/MyWeb/content.board?bId=${article.boardId}">${article.title}</a>
 					</td>
-					<td>${article.regDate}</td>
+					<td>
+						<fmt:formatDate value="${article.regDate}" pattern="yyyy년 MM월 dd일 E요일 HH:mm:ss"/>
+					</td>
 					<td>${article.hit}</td>
 				</tr>
 			</c:forEach>
@@ -59,9 +62,13 @@
 			<tbody>
 				<tr>
 					<td colspan="5" align="right">
-						<form action="" class="form-inline" >
+						<form action="/MyWeb/search.board" class="form-inline" >
 						  <div class="form-group">
-						    <input type="text" name="search" placeholder="제목검색" class="form-control" >
+						  	<select name="category">
+						  		<option value="title">제목</option>
+						  		<option value="writer">작성자</option>
+						  	</select>
+						    <input type="text" name="search" placeholder="검색어 입력" class="form-control" >
 						  	<input type="submit" value="검색" class="btn btn-default">
 							<input type="button" value="글 작성" class="btn btn-default" onclick="location.href='/MyWeb/write.board'">
 						  </div>

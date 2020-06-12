@@ -94,7 +94,7 @@ public class BoardDAO implements IBoardDAO {
 						rs.getInt("board_id"),
 						rs.getString("writer"),
 						rs.getString("title"),
-						rs.getString("content"),
+						rs.getString("content").replace("\r\n", "<br>"),
 						rs.getDate("reg_date"),
 						rs.getInt("hit")
 						);
@@ -108,14 +108,90 @@ public class BoardDAO implements IBoardDAO {
 
 	@Override
 	public void updateBoard(int bId, String title, String content) {
-		// TODO Auto-generated method stub
-
+		
+		String sql = "UPDATE my_board SET title=?, content=? WHERE board_id=?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setInt(3, bId);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
 	public void deleteBoard(int bId) {
-		// TODO Auto-generated method stub
 
+		String sql = "DELETE FROM my_board WHERE board_id=?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setInt(1, bId);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public List<BoardVO> searchBoard(String category, String keyword) {
+		
+		List<BoardVO> articles = new ArrayList<>();
+		
+		String sql = "SELECT * FROM my_board WHERE " + category + " LIKE ?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, "%" + keyword + "%");
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardVO article = new BoardVO(
+						rs.getInt("board_id"),
+						rs.getString("writer"),
+						rs.getString("title"),
+						rs.getString("content"),
+						rs.getDate("reg_date"),
+						rs.getInt("hit")
+						);
+				articles.add(article);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return articles;
+	}
+
+	@Override
+	public void upHit(int bId) {
+
+		String sql = "UPDATE my_board SET hit=hit+1 WHERE board_id=?";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, bId);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 }

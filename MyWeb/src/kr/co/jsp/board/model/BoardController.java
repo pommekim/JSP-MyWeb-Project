@@ -14,6 +14,8 @@ import kr.co.jsp.board.service.GetListServiceImpl;
 import kr.co.jsp.board.service.IBoardService;
 import kr.co.jsp.board.service.ModifyServiceImpl;
 import kr.co.jsp.board.service.RegistServiceImpl;
+import kr.co.jsp.board.service.SearchServiceImpl;
+import kr.co.jsp.board.service.UpdateServiceImpl;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
@@ -80,6 +82,34 @@ public class BoardController extends HttpServlet {
 			sv.execute(request, response);
 			
 			request.getRequestDispatcher("board/board_modify.jsp").forward(request, response);
+			break;
+			
+		case "update":
+			System.out.println("글 수정 요청이 들어옴!");
+			sv = new UpdateServiceImpl();
+			sv.execute(request, response);
+			
+			response.sendRedirect("/MyWeb/list.board");
+			break;
+			
+		case "delete":
+			System.out.println("글 삭제 요청이 들어옴!");
+			sv = new DeleteServiceImpl();
+			sv.execute(request, response);
+			
+			response.sendRedirect("/MyWeb/list.board");
+			break;
+			
+		case "search":
+			System.out.println("글 검색 요청이 들어옴!");
+			sv = new SearchServiceImpl();
+			sv.execute(request, response);
+			
+			//null이 아닐 때만 포워딩을 하고 null일 때는 아무것도 하지 말아라(중복 응답 차단)
+			if(request.getAttribute("boardList") != null) {
+				request.getRequestDispatcher("board/board_list.jsp").forward(request, response);
+			}
+			
 			break;
 		}
 		

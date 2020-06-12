@@ -79,7 +79,7 @@
                                 <c:choose>
                                 	<c:when test="${sessionScope.user_id == contentBoard.writer}">
                                 		<a class="btn btn-primary" href="/MyWeb/modify.board?bId=${contentBoard.boardId}">수정하기</a>
-                                		<a class="btn btn-danger" href="">삭제하기</a>
+                                		<a class="btn btn-danger" href="/MyWeb/delete.board?bId=${contentBoard.boardId}" onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
                                 	</c:when>
                                 	<c:otherwise>
                                 		<a class="btn btn-primary" href="/MyWeb/write.board">새 글 쓰기</a>

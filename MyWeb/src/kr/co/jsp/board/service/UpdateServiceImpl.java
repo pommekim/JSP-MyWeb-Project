@@ -5,17 +5,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.jsp.board.model.BoardDAO;
 
-public class RegistServiceImpl implements IBoardService {
+public class UpdateServiceImpl implements IBoardService {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		String writer = request.getParameter("bWriter");
+		
+		int bId = Integer.parseInt(request.getParameter("bId"));
 		String title = request.getParameter("bTitle");
 		String content = request.getParameter("bContent");
 		
-		content.replace("<br>", "\r\n");
-		
-		BoardDAO.getInstance().regist(writer, title, content);
+		BoardDAO.getInstance().updateBoard(bId, title, content);
 
 	}
 
